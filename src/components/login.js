@@ -14,12 +14,11 @@ class LoginScreen extends React.Component {
     super(props);
     console.log('login Screen', this.props)
     this.state = {email: '', password: ''};
-    console.log('fff', firebaseApp)
   }
 
   _onPressLogin = () => {
     console.log(this.state)
-    if (this.state.email.length === 0) {
+    if (this.state.email.length === 0 && this.state.email.includes('@') === false) {
       Alert.alert(
         'Error',
         'email 형식에 맞춰주세요',
@@ -67,7 +66,7 @@ class LoginScreen extends React.Component {
         <Text>{this.props.title}</Text>
         <TextInput
           style={{height: 40}}
-          placeholder="ID"
+          placeholder="email"
           value={this.state.email}
           onChangeText={(text) => this.setState({email: text})}
           />
@@ -88,7 +87,6 @@ class LoginScreen extends React.Component {
           title="Go Signup"
           color="blue"
           />
-
       </View>
     );
   }

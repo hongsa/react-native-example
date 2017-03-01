@@ -18,7 +18,7 @@ class SignupScreen extends React.Component {
 
   _onPressSignup = () => {
     console.log(this.state)
-    if (this.state.email.length === 0) {
+    if (this.state.email.length === 0 && this.state.email.includes('@') === false) {
       Alert.alert(
         'Error',
         'email 형식에 맞춰주세요',
@@ -63,9 +63,6 @@ class SignupScreen extends React.Component {
         console.log(error.toString())
     }
 }
-
-
-
   _onPressLoginScreen = () => {
     this.props.navigator.push({name: 'login'})
   }
@@ -76,7 +73,7 @@ class SignupScreen extends React.Component {
         <Text>{this.props.title}</Text>
         <TextInput
           style={{height: 40}}
-          placeholder="ID"
+          placeholder="email"
           value={this.state.email}
           onChangeText={(text) => this.setState({email: text})}
           />
