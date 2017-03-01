@@ -46,13 +46,26 @@ class SignupScreen extends React.Component {
         { cancelable: false }
       )
     } else {
-      console.log(this.state.email, this.state.password)
-      firebaseApp.auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password);
-      console.log("Account created");
-      this.props.navigator.push({name: 'logout'})
+      this._signup(this.state.email, this.state.password)
     }
   }
+
+  async _signup(email, pass) {
+
+    try {
+        await firebaseApp.auth()
+            .createUserWithEmailAndPassword(email, pass);
+
+        console.log("Sign Up!");
+        this.props.navigator.push({name: 'logout'})
+
+    } catch (error) {
+        console.log(error.toString())
+    }
+}
+
+
+
   _onPressLoginScreen = () => {
     this.props.navigator.push({name: 'login'})
   }

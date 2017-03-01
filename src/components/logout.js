@@ -15,10 +15,18 @@ class LogoutScreen extends React.Component {
   }
 
   _onPressLogOut = () => {
-    console.log(this.state)
-    firebaseApp.auth().signOut();
-    this.props.navigator.pop();
+    this._logout()
   }
+
+  async _logout() {
+    try {
+        await firebaseApp.auth().signOut();
+        this.props.navigator.pop();
+    } catch (error) {
+        console.log(error);
+    }
+
+}
 
   render() {
     return (

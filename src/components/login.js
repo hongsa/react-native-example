@@ -38,17 +38,23 @@ class LoginScreen extends React.Component {
         { cancelable: false }
       )
     } else {
-      try {
-        console.log(this.state.email, this.state.password)
-        firebaseApp.auth()
-        .signInWithEmailAndPassword(this.state.email, this.state.password);
-        console.log("Login Success");
-        this.props.navigator.push({name: 'logout'})
-      } catch (error) {
-        console.log(error.toString())
-      }
+      this._login(this.state.email, this.state.password)
     }
   }
+
+  async _login(email, pass) {
+
+    try {
+        await firebaseApp.auth()
+            .signInWithEmailAndPassword(email, pass);
+
+        console.log("Logged In!");
+        this.props.navigator.push({name: 'logout'});
+
+    } catch (error) {
+        console.log(error.toString())
+    }
+}
 
   _onPressSignupScreen = () => {
     console.log(this.state)
