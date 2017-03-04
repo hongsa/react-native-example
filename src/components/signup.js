@@ -5,66 +5,60 @@ import {
   TextInput,
   Button,
   View,
-  Alert
+  Alert,
 } from 'react-native';
-import { firebaseApp } from './settings';
+// import { firebaseApp } from './settings';
 
 class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
-    console.log('SignupScreen', this.props)
-    this.state = {email: '', password: '', passwordConfirm: ''};
+    this.state = { email: '', password: '', passwordConfirm: '' };
   }
 
   _onPressSignup = () => {
-    console.log(this.state)
     if (this.state.email.length === 0 && this.state.email.includes('@') === false) {
       Alert.alert(
         'Error',
         'email 형식에 맞춰주세요',
         [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
         ],
-        { cancelable: false }
-      )
-    } else if (this.state.password.length < 6 ) {
+        { cancelable: false },
+      );
+    } else if (this.state.password.length < 6) {
       Alert.alert(
         'Error',
         '비밀번호는 6자 이상!',
         [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
         ],
-        { cancelable: false }
-      )
+        { cancelable: false },
+      );
     } else if (this.state.password !== this.state.passwordConfirm) {
       Alert.alert(
         'Error',
         '비밀번호 동일하게 입력해주세요',
         [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
         ],
-        { cancelable: false }
-      )
+        { cancelable: false },
+      );
     } else {
-      this._signup(this.state.email, this.state.password)
+      this._signup(this.state.email, this.state.password);
     }
   }
 
   async _signup(email, pass) {
-
     try {
-        await firebaseApp.auth()
+        await firebase.auth()
             .createUserWithEmailAndPassword(email, pass);
-
-        console.log("Sign Up!");
-        this.props.navigator.push({name: 'logout'})
-
+        this.props.navigator.push({ name: 'logout' });
     } catch (error) {
-        console.log(error.toString())
+        console.log(error.toString());
     }
 }
   _onPressLoginScreen = () => {
-    this.props.navigator.push({name: 'login'})
+    this.props.navigator.push({ name: 'login' });
   }
 
   render() {
@@ -72,24 +66,24 @@ class SignupScreen extends React.Component {
       <View style={styles.container}>
         <Text>{this.props.title}</Text>
         <TextInput
-          style={{height: 40}}
+          style={{ height: 40 }}
           placeholder="email"
           value={this.state.email}
-          onChangeText={(text) => this.setState({email: text})}
+          onChangeText={(text) => this.setState({ email: text })}
           />
         <TextInput
-          style={{height: 40}}
+          style={{ height: 40 }}
           placeholder="password"
           value={this.state.password}
-          onChangeText={(text) => this.setState({password: text})}
-          secureTextEntry = {true}
+          onChangeText={(text) => this.setState({ password: text })}
+          secureTextEntry={true}
           />
         <TextInput
-          style={{height: 40}}
+          style={{ height: 40 }}
           placeholder="password Confirm"
           value={this.state.passwordConfirm}
-          onChangeText={(text) => this.setState({passwordConfirm: text})}
-          secureTextEntry = {true}
+          onChangeText={(text) => this.setState({ passwordConfirm: text })}
+          secureTextEntry={true}
           />
         <Button
           onPress={this._onPressSignup}
@@ -126,4 +120,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen
+export default SignupScreen;

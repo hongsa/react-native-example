@@ -3,28 +3,22 @@ import {
   StyleSheet,
   Text,
   Button,
-  View
+  View,
 } from 'react-native';
-import { firebaseApp } from './settings';
+// import { firebase } from './settings';
 
 class LogoutScreen extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log('LogoutScreen', this.props)
-  }
-
   _onPressLogOut = () => {
-    this._logout()
+    this._logout();
   }
 
   async _logout() {
     try {
-        await firebaseApp.auth().signOut();
+        await firebase.auth().signOut();
         this.props.navigator.pop();
     } catch (error) {
-        console.log(error);
+        console.log(error.toString());
     }
-
 }
 
   render() {
@@ -35,7 +29,7 @@ class LogoutScreen extends React.Component {
           onPress={this._onPressLogOut}
           title="Logout"
           color="#841584"
-          />
+        />
       </View>
     );
   }
@@ -60,4 +54,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogoutScreen
+export default LogoutScreen;
