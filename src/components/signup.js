@@ -7,16 +7,15 @@ import {
   View,
   Alert,
 } from 'react-native';
-// import { firebaseApp } from './settings';
 
 class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '', passwordConfirm: '' };
+    this.state = { email: '', password: '', passwordConfirm: '', error: '' };
   }
 
   _onPressSignup = () => {
-    if (this.state.email.length === 0 && this.state.email.includes('@') === false) {
+    if (this.state.email.length === 0 || this.state.email.includes('@') === false) {
       Alert.alert(
         'Error',
         'email 형식에 맞춰주세요',
@@ -50,17 +49,14 @@ class SignupScreen extends React.Component {
 
   async _signup(email, pass) {
     try {
-        await firebase.auth()
-            .createUserWithEmailAndPassword(email, pass);
-        this.props.navigator.push({ name: 'logout' });
+      await firebase.auth()
+      .createUserWithEmailAndPassword(email, pass);
     } catch (error) {
-        console.log(error.toString());
+      this.setState({
+        error: error.message || error,
+      });
     }
-}
-  _onPressLoginScreen = () => {
-    this.props.navigator.push({ name: 'login' });
   }
-
   render() {
     return (
       <View style={styles.container}>
@@ -85,17 +81,19 @@ class SignupScreen extends React.Component {
           onChangeText={(text) => this.setState({ passwordConfirm: text })}
           secureTextEntry={true}
           />
+        <Text>
+          {this.state.error}
+        </Text>
         <Button
           onPress={this._onPressSignup}
           title="Signup"
           color="#841584"
           />
         <Button
-          onPress={this._onPressLoginScreen}
+          onPress={this.props._onPressLoginScreen}
           title="Go Login"
           color="blue"
           />
-
       </View>
     );
   }

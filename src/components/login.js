@@ -7,16 +7,15 @@ import {
   View,
   Alert,
 } from 'react-native';
-// import { firebase } from './settings';
 
 class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '' };
+    this.state = { email: '', password: '', error: '' };
   }
 
   _onPressLogin = () => {
-    if (this.state.email.length === 0 && this.state.email.includes('@') === false) {
+    if (this.state.email.length === 0 || this.state.email.includes('@') === false) {
       Alert.alert(
         'Error',
         'email 형식에 맞춰주세요',
@@ -43,14 +42,11 @@ class LoginScreen extends React.Component {
     try {
       await firebase.auth()
       .signInWithEmailAndPassword(email, pass);
-      this.props.navigator.push({ name: 'logout' });
     } catch (error) {
-      console.log(error.toString());
+      this.setState({
+        error: error.message || error,
+      });
     }
-  }
-
-  _onPressSignupScreen = () => {
-    this.props.navigator.push({ name: 'signup' });
   }
 
   render() {
@@ -70,13 +66,16 @@ class LoginScreen extends React.Component {
           onChangeText={(text) => this.setState({ password: text })}
           secureTextEntry={true}
           />
+        <Text>
+          {this.state.error}
+        </Text>
         <Button
           onPress={this._onPressLogin}
           title="Login"
           color="#841584"
           />
         <Button
-          onPress={this._onPressSignupScreen}
+          onPress={this.props._onPressSignupScreen}
           title="Go Signup"
           color="blue"
           />

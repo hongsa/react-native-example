@@ -1,11 +1,11 @@
 import React from 'react';
 import { AppRegistry } from 'react-native';
-import MainComponent from './src/components/main';
+import App from './src/components/app';
 
 class RnFirst extends React.Component {
   render() {
     return (
-      <MainComponent/>
+      <App />
     );
   }
 }

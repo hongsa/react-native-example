@@ -5,7 +5,8 @@ import {
   Button,
   View,
 } from 'react-native';
-// import { firebase } from './settings';
+import { Actions } from 'react-native-router-flux';
+
 
 class LogoutScreen extends React.Component {
   _onPressLogOut = () => {
@@ -14,12 +15,12 @@ class LogoutScreen extends React.Component {
 
   async _logout() {
     try {
-        await firebase.auth().signOut();
-        this.props.navigator.pop();
+      await firebase.auth().signOut();
+      Actions.pop();
     } catch (error) {
-        console.log(error.toString());
+      console.log(error.toString());
     }
-}
+  }
 
   render() {
     return (
@@ -29,7 +30,7 @@ class LogoutScreen extends React.Component {
           onPress={this._onPressLogOut}
           title="Logout"
           color="#841584"
-        />
+          />
       </View>
     );
   }
