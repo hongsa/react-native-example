@@ -13,6 +13,7 @@ class TimelineScreen extends React.Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       dataSource: ds.cloneWithRows([]),
+      loading: false,
     };
   }
 
@@ -26,6 +27,9 @@ class TimelineScreen extends React.Component {
       const responseJson = await response.json();
       this.setState({
         dataSource: this.state.dataSource.cloneWithRows(responseJson.topic_list.topics),
+      });
+      this.setState({
+        loading: true,
       });
     } catch (error) {
       console.error(error);
@@ -66,7 +70,7 @@ class TimelineScreen extends React.Component {
           dataSource={this.state.dataSource}
           renderRow={this._renderRow}
           enableEmptySections
-          />
+        />
       </View>
     );
   }

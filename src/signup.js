@@ -7,14 +7,15 @@ import {
   View,
   Alert,
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
-class LoginScreen extends React.Component {
+class SignupScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '', error: '' };
+    this.state = { email: '', password: '', passwordConfirm: '', error: '' };
   }
 
-  _onPressLogin = () => {
+  _onPressSignup = () => {
     if (this.state.email.length === 0 || this.state.email.includes('@') === false) {
       Alert.alert(
         'Error',
@@ -33,22 +34,31 @@ class LoginScreen extends React.Component {
         ],
         { cancelable: false },
       );
+    } else if (this.state.password !== this.state.passwordConfirm) {
+      Alert.alert(
+        'Error',
+        '비밀번호 동일하게 입력해주세요',
+        [
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
+        ],
+        { cancelable: false },
+      );
     } else {
-      this._login(this.state.email, this.state.password);
+      this._signup(this.state.email, this.state.password);
     }
   }
 
-  async _login(email, pass) {
+  async _signup(email, pass) {
     try {
       await firebase.auth()
-      .signInWithEmailAndPassword(email, pass);
+      .createUserWithEmailAndPassword(email, pass);
+      Actions.main();
     } catch (error) {
       this.setState({
         error: error.message || error,
       });
     }
   }
-
   render() {
     return (
       <View style={styles.container}>
@@ -66,18 +76,20 @@ class LoginScreen extends React.Component {
           onChangeText={(text) => this.setState({ password: text })}
           secureTextEntry={true}
           />
+        <TextInput
+          style={{ height: 40 }}
+          placeholder="password Confirm"
+          value={this.state.passwordConfirm}
+          onChangeText={(text) => this.setState({ passwordConfirm: text })}
+          secureTextEntry={true}
+          />
         <Text>
           {this.state.error}
         </Text>
         <Button
-          onPress={this._onPressLogin}
-          title="Login"
+          onPress={this._onPressSignup}
+          title="Signup"
           color="#841584"
-          />
-        <Button
-          onPress={this.props._onPressSignupScreen}
-          title="Go Signup"
-          color="blue"
           />
       </View>
     );
@@ -103,4 +115,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignupScreen;

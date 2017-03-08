@@ -2,11 +2,13 @@ import Config from 'react-native-config';
 import firebase from 'firebase';
 import React from 'react';
 import { View } from 'react-native';
-import { Router, Scene } from 'react-native-router-flux';
+// import { Router, Scene } from 'react-native-router-flux';
+import { Spinner } from './common/components';
 
 import LoginScreen from './login';
 import SignupScreen from './signup';
 import TimelineScreen from './timeline';
+import Router from './router';
 
 class App extends React.Component {
   constructor(props) {
@@ -39,9 +41,9 @@ class App extends React.Component {
     console.log(this.state.mode);
     switch (this.state.mode) {
       case 'login':
-      return <LoginScreen title="login" _onPressSignupScreen={() => this.setState({ mode: 'signup' })} />;
+      return <LoginScreen title="login" onPressSignupScreen={() => this.setState({ mode: 'signup' })} />;
       case 'signup':
-      return <SignupScreen title="signup" _onPressLoginScreen={() => this.setState({ mode: 'login' })} />;
+      return <SignupScreen title="signup" onPressLoginScreen={() => this.setState({ mode: 'login' })} />;
       case 'loggedIn':
       return (
         <Router>
@@ -55,15 +57,16 @@ class App extends React.Component {
         </Router>
       );
       default:
-        return true;
+      return <Spinner size="large" />;
     }
   }
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
-        {this._renderContent()}
-      </View>
+      // <View style={{ flex: 1 }}>
+      //   {this._renderContent()}
+      // </View>
+      <Router />
     );
   }
 }

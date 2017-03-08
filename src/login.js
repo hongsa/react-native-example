@@ -7,14 +7,19 @@ import {
   View,
   Alert,
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
-class SignupScreen extends React.Component {
+class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { email: '', password: '', passwordConfirm: '', error: '' };
+    this.state = { email: '', password: '', error: '' };
   }
 
-  _onPressSignup = () => {
+  _onPressSignupScreen = () => {
+    Actions.signup();
+  }
+
+  _onPressLogin = () => {
     if (this.state.email.length === 0 || this.state.email.includes('@') === false) {
       Alert.alert(
         'Error',
@@ -33,30 +38,23 @@ class SignupScreen extends React.Component {
         ],
         { cancelable: false },
       );
-    } else if (this.state.password !== this.state.passwordConfirm) {
-      Alert.alert(
-        'Error',
-        '비밀번호 동일하게 입력해주세요',
-        [
-          { text: 'OK', onPress: () => console.log('OK Pressed') },
-        ],
-        { cancelable: false },
-      );
     } else {
-      this._signup(this.state.email, this.state.password);
+      this._login(this.state.email, this.state.password);
     }
   }
 
-  async _signup(email, pass) {
+  async _login(email, pass) {
     try {
       await firebase.auth()
-      .createUserWithEmailAndPassword(email, pass);
+      .signInWithEmailAndPassword(email, pass);
+       Actions.main();
     } catch (error) {
       this.setState({
         error: error.message || error,
       });
     }
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -66,34 +64,27 @@ class SignupScreen extends React.Component {
           placeholder="email"
           value={this.state.email}
           onChangeText={(text) => this.setState({ email: text })}
-          />
+        />
         <TextInput
           style={{ height: 40 }}
           placeholder="password"
           value={this.state.password}
           onChangeText={(text) => this.setState({ password: text })}
           secureTextEntry={true}
-          />
-        <TextInput
-          style={{ height: 40 }}
-          placeholder="password Confirm"
-          value={this.state.passwordConfirm}
-          onChangeText={(text) => this.setState({ passwordConfirm: text })}
-          secureTextEntry={true}
-          />
+        />
         <Text>
           {this.state.error}
         </Text>
         <Button
-          onPress={this._onPressSignup}
-          title="Signup"
+          onPress={this._onPressLogin}
+          title="Login"
           color="#841584"
-          />
+        />
         <Button
-          onPress={this.props._onPressLoginScreen}
-          title="Go Login"
+          onPress={this._onPressSignupScreen}
+          title="Go Signup"
           color="blue"
-          />
+        />
       </View>
     );
   }
@@ -118,4 +109,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignupScreen;
+export default LoginScreen;
