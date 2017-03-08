@@ -6,6 +6,8 @@ import {
   Button,
   ListView,
 } from 'react-native';
+import { Actions } from 'react-native-router-flux';
+import { Spinner } from './common/components';
 
 class TimelineScreen extends React.Component {
   constructor(props) {
@@ -13,7 +15,7 @@ class TimelineScreen extends React.Component {
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       dataSource: ds.cloneWithRows([]),
-      loading: false,
+      loading: true,
     };
   }
 
@@ -29,7 +31,7 @@ class TimelineScreen extends React.Component {
         dataSource: this.state.dataSource.cloneWithRows(responseJson.topic_list.topics),
       });
       this.setState({
-        loading: true,
+        loading: false,
       });
     } catch (error) {
       console.error(error);
@@ -52,15 +54,18 @@ class TimelineScreen extends React.Component {
   async _logout() {
     try {
       await firebase.auth().signOut();
+      Actions.auth();
     } catch (error) {
       console.log(error.toString());
     }
   }
 
   render() {
+    if (this.state.loading) {
+      return <Spinner size="large" />;
+    }
     return (
       <View style={styles.container}>
-        <Text>{this.props.title}</Text>
         <Button
           onPress={this._onPressLogOut}
           title="Logout"
