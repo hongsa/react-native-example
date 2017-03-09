@@ -68,21 +68,21 @@ class SignupScreen extends React.Component {
           placeholder="email"
           value={this.state.email}
           onChangeText={(text) => this.setState({ email: text })}
-          />
+        />
         <TextInput
           style={{ height: 40 }}
           placeholder="password"
           value={this.state.password}
           onChangeText={(text) => this.setState({ password: text })}
-          secureTextEntry={true}
-          />
+          secureTextEntry
+        />
         <TextInput
           style={{ height: 40 }}
           placeholder="password Confirm"
           value={this.state.passwordConfirm}
           onChangeText={(text) => this.setState({ passwordConfirm: text })}
-          secureTextEntry={true}
-          />
+          secureTextEntry
+        />
         <Text>
           {this.state.error}
         </Text>
@@ -90,7 +90,7 @@ class SignupScreen extends React.Component {
           onPress={this._onPressSignup}
           title="Signup"
           color="#841584"
-          />
+        />
       </View>
     );
   }

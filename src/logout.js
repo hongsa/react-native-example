@@ -30,7 +30,7 @@ class LogoutScreen extends React.Component {
           onPress={this._onPressLogOut}
           title="Logout"
           color="#841584"
-          />
+        />
       </View>
     );
   }
